@@ -43,7 +43,33 @@ tetto2 = JOIN([tetto2bot,tetto2top])
 tetto3bot = T(3)(9.1)(CIRCUMFERENCE(6.5)(72))
 tetto3top = T(3)(9.4)(CIRCUMFERENCE(6.7)(36))
 tetto3 = JOIN([tetto3bot,tetto3top])
-cono = JOIN([tetto3top,MK([0,0,14.2])])
+
+#ruota un oggetto a 360°
+def copertura(l):
+	out = l
+	for i in range(72):
+		b = R([1,2])(i*PI/36)(l)
+		out = STRUCT([out,b])
+	return out
+
+#restituisce una fila di tegole
+def tegolator(n):
+    tegola = DIFFERENCE([CYLINDER([0.3,1])(12),T(1)(0.1)(CYLINDER([0.3,1])(6))])
+    output = tegola
+    for i in range(n):
+        occ = T([1,3])([0.1,(i+1)*0.9])(R([1,3])(-PI/36)(tegola))
+        output = STRUCT([output,occ])
+    return output
+
+t = tegolator(8)
+tt = MAP([S3,S2,S1])(t)
+ttt = R([1,3])(PI*1.1)(tt)
+c = copertura(ttt)
+
+#se i tempi di caricamento sono lunghi scegliere l'istanza alternativa di "cono"
+cono = T(3)(11.8)(c)
+#cono = JOIN([tetto3top,MK([0,0,14.2])])
+
 tetto = STRUCT ([tetto1,tetto2,tetto3])
 
 #prato

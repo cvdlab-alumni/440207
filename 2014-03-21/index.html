@@ -28,10 +28,6 @@
 	&nbsp&nbspShort Description of the work:<DIR>
 	<BR>
 	<PRE>
-	L'obiettivo principale è stato rappresentare il tempio fedelmente al 120 a.C.,
-	sostituendo l'odierno tetto in legno con l'originale in marmo come nelle Tholos greche.
-	
-	
 	Non avendo una base rettangolare, anzichè rappresentare il mock_up_3D attraverso piani
 	trasversali e frontali ho optato per l'unione dei vari piani dell'esercizio 1 con dei
 	piani ottenuti ruotando la vista frontale del tempio sull'asse z (come si può vedere <a href="./images/fig04.png">quì</a>).
@@ -39,6 +35,13 @@
 	
 	L'oggetto two_and_half_model è stato colorato con varie sfumature del blu a seconda della
 	profondità dei vari livelli che lo compongono.
+	
+	nei file exercise3 ed exercise4, se si vuole ottimizzare il tempo di compilazione si può commentare
+	l'istanza "cono" a favore di quella già commentata nel codice, in questo modo si può passare dalla
+	rappresentazione del tetto ai giorni nostri (<a href="./images/fig09.png">legno e tegole</a>) alla rappresentazione l'originale del
+	120 a.C. (<a href="./images/fig03.png">in marmo</a> come nelle Tholos greche).
+	Per creare il tetto composto da tegole ho implementato la funzione tegolator(n) che crea una fila
+	di n tegole ed il metodo copertura(l) che restituisce una copertura a 360° del tetto
 	
 	
 	Essendo già presente il crepidoma (scalini di pietra sui quali si ergevano i templi) ho inserito,
