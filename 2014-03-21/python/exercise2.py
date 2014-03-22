@@ -15,7 +15,7 @@ def circling(l):
 def around(bone):
         out = bone
         for i in range(10):
-                a = R([1,2])(i*PI/10)(bone)
+                a = R([1,2])(PI/20 + i*PI/10)(bone)
                 out = STRUCT([out,a])
         return out
 

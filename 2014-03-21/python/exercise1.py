@@ -49,7 +49,7 @@ floor2 = STRUCT([columns2D,naosWindows2D])
 floor3 = STRUCT([naosClosed2D,squares2D])
 
 #floor4 (tetto)
-floor4 = CIRCUMFERENCE(6.1)(360)
+floor4 = CIRCUMFERENCE(6.2)(360)
 
 #ogni "piano" viene colorato nella scala di blu
 floor0 = COLOR([0,0,1])(floor0)         #100% blu
