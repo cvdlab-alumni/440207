@@ -52,22 +52,12 @@ base_tempio = CYLINDER([7,0.3])(360)
 #la base degli edifici, come punto di riferimento
 edificio_1 = T([1,2,3])([14,15,0.1])(INSR(PROD)([QUOTE([5.4*(5+1)-5]),QUOTE([5.4*(8+1)-5]),QUOTE([0.1])]))
 edificio_2 = T([1,2,3])([-44,40,0.1])(INSR(PROD)([QUOTE([5.4*(6+1)-5]),QUOTE([5.4*(3+1)-5]),QUOTE([0.1])]))
-edificio_3 = T([1,2,3])([15,-55,0.1])(INSR(PROD)([QUOTE([5.4*(3+1)-5]),QUOTE([5.4*(6+1)-5]),QUOTE([0.1])]))
+edificio_3 = T([1,2,3])([14.5,-55,0.1])(INSR(PROD)([QUOTE([5.4*(14+1)-5]),QUOTE([5.4*(6+1)-5]),QUOTE([0.1])]))
 edificio_4 = T([1,2,3])([-45,-55,0.1])(INSR(PROD)([QUOTE([5.4*(6+1)-5]),QUOTE([5.4*(6+1)-5]),QUOTE([0.1])]))
-edifici = STRUCT([edificio_1,edificio_2,edificio_3,edificio_4])
-#pavimentazione esterna
-pavimento = T([1,2,3])([-50,-70,-0.1])(INSR(PROD)([QUOTE([100]),QUOTE([140]),QUOTE([0.1])]))#il prato attorno al tempio
-x1 = QUOTE([42.5])
-y1 = QUOTE([62.5])
-rect1 = INSR(PROD)([x1,y1,QUOTE([0.1])])
-cyrc1 = CYLINDER([7.5,0.1])(36)
-pratoBase = (DIFFERENCE([rect1,cyrc1]))
-prato_1 = T([1,2])([5,5])(pratoBase)
-prato_2 = S(2)(-1)(prato_1)
-prato_3 = S(1)(-1)(prato_1)
-prato_4 = S(1)(-1)(prato_2)
-prato_finale = STRUCT([prato_1,prato_2,prato_3,prato_4])
-scenario = STRUCT([pavimento,prato_finale,base_tempio,edifici])
+edificio_5 = T([1,2,3])([125,30,0.1])(INSR(PROD)([QUOTE([5.4*(3+1)-5]),QUOTE([5.4*(3+1)-5]),QUOTE([0.1])]))
+edifici = STRUCT([edificio_1,edificio_2,edificio_3,edificio_4,edificio_5])
+#scenario 2D
+scenario = COLOR([0.596,0.463,0.329])(STRUCT([floor,pratone,base_tempio,edifici]))
 
 #gli elementi precedenti sono solo una base presa dall'esercizio 3
 #per visualizzare in dettagli l'arredo urbano, successivamente
@@ -110,7 +100,7 @@ cestino_sommita = T(3)(0.5)(CIRCUMFERENCE(0.3)(36))
 cestino_pieno = JOIN([cestino_base,cestino_sommita])
 cestino = DIFFERENCE([cestino_pieno,T(3)(0.01)(cestino_pieno)])
 cestino = COLOR([0.388,0.592,0.816])(cestino)
-#piscina
+#piscina ovale
 bordo1a = CYLINDER([6,0.3])(48)
 bordo1b = CYLINDER([5.9,0.3])(48)
 bordo1 = DIFFERENCE([bordo1a,bordo1b])
@@ -120,7 +110,26 @@ bordo2 = DIFFERENCE([bordo2a,bordo2b])
 acqua = CYLINDER([5.8,0.1])(48)
 acqua = COLOR([0.498,1,0.831])(acqua)
 piscina_tonda = STRUCT([bordo1,bordo2,acqua])
-piscina = T([1,2,3])([-28,25,0.1])(S(1)(2)(piscina_tonda))
+piscina_ovale = T([1,2,3])([-28,25,0.1])(S(1)(2)(piscina_tonda))
+#piscina rettangolare
+bordo3a = CUBOID([32,55,0.3])
+bordo3b = T([1,2])([0.5,0.5])(CUBOID([31,54,0.3]))
+bordo3 = DIFFERENCE([bordo3a,bordo3b])
+bordo4a = CUBOID([31,54,0.2])
+bordo4b = T([1,2])([0.5,0.5])(CUBOID([30,53,0.2]))
+bordo4 = DIFFERENCE([bordo4a,bordo4b])
+acqua = T([1,2])([1,1])(CUBOID([30,53,0.1]))
+acqua = COLOR([0.498,1,0.831])(acqua)
+piscina_rettangolare = STRUCT([bordo3,T([1,2])([0.5,0.5])(bordo4),acqua])
+piscina_rettangolare = T([1,2,3])([118,-65,0.1])(piscina_rettangolare)
+
+#popola un rettangolo(giardino) con alberi a cono e sferici
+def popola(n):
+    oggetti = T([1,2])([21.25,31.25])(cestino)
+    for i in range(n):
+        oggetti = STRUCT([oggetti,T([1,2])([random.random()*42.5,random.random()*62.5])(tree_ball)])
+        oggetti = STRUCT([oggetti,T([1,2])([random.random()*42.5,random.random()*62.5])(tree_cone)])
+    return T(3)(0.1)(oggetti)
 
 #posizionamento arredi
 faro_tempio = T([1,2])([5.5,5.5])(R([1,2])(-PI/4)(faro))
@@ -152,8 +161,12 @@ albero1 = T([1,2])([12,12])(tree_cone)
 albero2 = T([1,2])([-12,12])(tree_cone)
 albero3 = T([1,2])([12,-12])(tree_cone)
 albero4 = T([1,2])([-12,-12])(tree_cone)
-arredo_urbano = STRUCT([piscina,arredo_urbano_strada1,arredo_urbano_strada2,arredo_urbano_strada3,arredo_urbano_strada4,albero1,albero2,albero3,albero4])
+bosco = T([1,2])([57.5,5])(popola(150))
+arredo_urbano1 = STRUCT([arredo_urbano_strada1,arredo_urbano_strada2,arredo_urbano_strada3,arredo_urbano_strada4,albero1,albero2,albero3,albero4])
+arredo_urbano2 = T(1)(105)(arredo_urbano1)
+arredo_urbano3 = T(1)(52.5)(STRUCT([arredo_urbano_strada3]))
+arredo_urbano = STRUCT([arredo_urbano1,arredo_urbano2,arredo_urbano3,piscina_ovale,piscina_rettangolare,bosco])
 
 #selezionare solo una delle due VIEW seguenti
-VIEW(STRUCT([scenario,arredo_urbano]))
-#VIEW(STRUCT([floor,pratone,arredo_urbano,tempio,neighbouring_buildings]))
+#VIEW(STRUCT([scenario,arredo_urbano]))
+VIEW(STRUCT([floor,pratone,arredo_urbano,tempio,neighbouring_buildings]))

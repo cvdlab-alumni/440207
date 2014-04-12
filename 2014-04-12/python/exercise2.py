@@ -2,6 +2,8 @@
 
 from pyplasm import *
 
+from exercise1 import *
+
 #ruota un oggetto a 360°
 def copertura(l):
 	out = l
@@ -45,6 +47,6 @@ tegolato = JOIN([tetto3top,MK([0,0,14.2])])
 naos = COLOR([0.561,0.498,0.302])(naos)
 tegolato = COLOR([0.396,0.263,0.129])(tegolato)
 
-vertical_enclosures = STRUCT([naos,tegolato])
+vertical_enclosures = STRUCT([naos,tegolato,SKELETON(1)(horizontal_partitions)])
 
 #VIEW(vertical_enclosures)
