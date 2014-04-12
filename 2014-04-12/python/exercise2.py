@@ -47,6 +47,6 @@ tegolato = JOIN([tetto3top,MK([0,0,14.2])])
 naos = COLOR([0.561,0.498,0.302])(naos)
 tegolato = COLOR([0.396,0.263,0.129])(tegolato)
 
-vertical_enclosures = STRUCT([naos,tegolato,SKELETON(1)(horizontal_partitions)])
+vertical_enclosures = STRUCT([naos,tegolato])
 
-#VIEW(vertical_enclosures)
+#VIEW(STRUCT([vertical_enclosures,SKELETON(1)(horizontal_partitions)]))
