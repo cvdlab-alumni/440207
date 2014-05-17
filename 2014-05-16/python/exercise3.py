@@ -62,7 +62,7 @@ hpc = SKEL_1(STRUCT(MKPOLS(m)))
 hpc = cellNumbering (m,hpc)(range(len(m[1])),ORANGE,2)
 VIEW(hpc)
 
-#assegno a 'new' il nuovo master..
+#assegno a 'new' il master ottenuto da 'easy_mer_num_del'..
 new = easy_mer_num_del(m,b,i,c)
 #re-visualizzo la numerazione delle celle dopo la funzione 'easy_mer_num_del'
 hpc = SKEL_1(STRUCT(MKPOLS(new)))
@@ -71,6 +71,7 @@ VIEW(hpc)
 #..e lo disegno
 DRAW(new)
 
+#assegno a 'new2' il master ottenuto da 'easy_mer_num_del_2'..
 new2 = easy_mer_num_del_2(m,b,i)
 #re-visualizzo la numerazione delle celle dopo la funzione 'easy_mer_num_del_2'
 hpc2 = SKEL_1(STRUCT(MKPOLS(new2)))
