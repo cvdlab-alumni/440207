@@ -1,0 +1,61 @@
+<meta charset="utf-8"> 
+<html>
+
+	<head>
+		<title></title>
+
+	</head>
+
+	<body>
+	
+	&nbsp&nbsp Name and surname:&nbsp&nbsp&nbsp&nbsp&nbspDario Santilli<BR>
+	&nbsp&nbsp University ID:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp440207<BR>
+	<BR>
+	<HR>
+	<BR></DIR>
+	&nbsp&nbspShort Description of the work:<DIR>
+	<BR>
+	<PRE>
+	Per comodità in ogni esercizio, è stata importata la libreria larcc (from larcc import *), all'interno della quale
+	vi sono <a href="./images/fig00.png">varie</a> librerie.
+	
+	Nel primo esercizio ho inizialmente creato dei <a href="./images/fig01.png">blocchi</a> dai quali ho <a href="./images/fig03.png">rimosso</a> delle celle per avere un modello 3D del mio appartamento;
+	successivamente ho usato la funzione assemblyDiagramInit e diagram2cell per dividere alcune pareti e ricavarci <a href="./images/fig04.png">porte e finestre</a>.
+	
+	Nel secondo esercizio ho usato larBezierCurve per dare una forma curvilinea al mio <a href="./images/fig06.png">giardino con recinto</a> ed ho ricavato locali
+	(con rispettive finestre) diversi dal piano terreno per poter "edificare" la <a href="./images/fig08.png">palazzina</a>.
+	Il complesso è situato su di una <a href="./images/fig09.png">collina</a> e avvicinandosi si può notare l'<a href="./images/fig11.png">ascensore</a> (in trasparenza per evitare occultamento),
+	varie ringhiere ed una rampa al piano terra.
+	
+	Nel terzo esercizio ho definito una funzione che, prendendo in input un master, una suddivisione ed una cella, ritorna lo stesso
+	master privo della porta ricavata dall'intervallo di input (per il codice commentato vedere la sezione 'Exercises').
+	In particolare ho definito due diverse tipologie della funzione easy_mer_num_del (easy merging, numbering and deleting):
+	<ul type="circle">
+	<li><b>easy_mer_num_del</b> usa il numero della cella passata in input per creare sottoblocchi e levare il primo blocco utile non adiacente al blocco
+		passato come parametro;</li>
+	<li><b>easy_mer_num_del_2</b> invece viene invocato senza passare alcun numero di cella ma, attraverso il cellNumbering, può ricevere dinamicamente un qualsiasi
+		numero di celle le quali verranno successivamente eliminate, quest'ultima funzione non è eccessivamente performante poichè prevede
+		l'inserimento manuale (nonostante in alcuni casi più preciso della funzione precedente) di ogni singola cella (inserimento interrompibile
+		passando '-1' come numero di cella).</li>
+	</ul>
+	</PRE>
+	<BR></DIR>
+	&nbsp&nbspImages:<DIR>
+	<ul type="circle">
+	<li>appartamento <a href="./images/fig02.png">"svuotato" dei locali</a></li>
+	<li>appartamento <a href="./images/fig05.png">con porte e finestre</a></li>
+	<li>appartamento <a href="./images/fig07.png">con giardino e recinto</a> (bird's-eye view)</li>
+	<li>palazzina <a href="./images/fig10.png">su di una collina</a></li>
+	</ul>
+	<BR></DIR>
+	&nbsp&nbspExercises:<DIR>
+	<ul type="square">
+	<li><a href="./python/exercise1.py">exercise1.py</a></li>
+	<li><a href="./python/exercise2.py">exercise2.py</a></li>
+	<li><a href="./python/exercise3.py">exercise3.py</a></li>
+	<li><a href="./python/exercise4.py">exercise4.py</a></li>
+	</ul>
+	</DIR>
+	</body>
+
+</html>
