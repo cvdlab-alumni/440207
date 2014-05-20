@@ -92,7 +92,60 @@ ala1 = STRUCT([floor0,out,floor1,floor2,roof])
 ala2 = S(2)(-1)(ala1)
 ala3 = T(1)(-2)(S(1)(-1)(ala1))
 place = COLOR([.4,.4,.4])(T(3)(-0.1)(CYLINDER([20,0.1])(72)))
-elevator = SKEL_1(T([1,2])([-3,-3.5])(CUBOID([1,1.5,9])))
+
+#elevatore
+#funzione che deopacizza un oggetto
+def trasparenza(oggetto):
+    return MATERIAL([1,1,1,0.1, 0,0,0.8,0.5, 1,1,1,0.1, 1,1,1,0.1, 100])(oggetto)
+
+floor = COLOR(GREEN)(T([1,2,3])([-5,-5,-.1])(CUBOID([10,10,.1])))
+g1 = T(3)(1)(MATERIAL([1,1,1,0.1, 0,0,0.8,0.5, 1,1,1,0.1, 1,1,1,0.1, 100])(floor))
+elevator1 = ((T([1,2])([-3,-3.5])(CUBOID([1,1.5,3.3]))))
+elevator2 = ((T([1,2,3])([-3,-3.5,3.3])(CUBOID([1,1.5,2.7]))))
+elevator3 = ((T([1,2,3])([-3,-3.5,6])(CUBOID([1,1.5,3]))))
+elevator1 = trasparenza(elevator1)
+elevator3 = trasparenza(elevator3)
+elevators = STRUCT([elevator1,elevator2,elevator3])
+
+#piscina
+WATERBLUE = [0.498,1,0.831]
+#prima curva
+controlpoints = [[0,0],[0,2*3],[-2*3,2*3],[-4*3,0],[0,-3*3]]
+dom = larDomain([64])
+mapping = larBezierCurve(controlpoints)
+obj = larMap(mapping)(dom)
+curva1 = STRUCT(MKPOLS(obj))
+cuore1 = STRUCT([curva1,S(1)(-1)(curva1)])
+#seconda curva
+controlpoints = [[0,-.1*3],[0,2*3],[-1.8*3,1.9*3],[-4*3,0],[0,-2.9*3]]
+dom = larDomain([64])
+mapping = larBezierCurve(controlpoints)
+obj = larMap(mapping)(dom)
+curva2 = STRUCT(MKPOLS(obj))
+cuore2 = STRUCT([curva2,S(1)(-1)(curva2)])
+#terza curva
+controlpoints = [[0,-.2*3],[0,2*3],[-1.6*3,1.8*3],[-4*3,0],[0,-2.8*3]]
+dom = larDomain([64])
+mapping = larBezierCurve(controlpoints)
+obj = larMap(mapping)(dom)
+curva3 = STRUCT(MKPOLS(obj))
+cuore3 = STRUCT([curva3,S(1)(-1)(curva3)])
+#quarta curva
+controlpoints = [[0,-.3*3],[0,2*3],[-1.4*3,1.7*3],[-4*3,0],[0,-2.7*3]]
+mapping = larBezierCurve(controlpoints)
+obj = larMap(mapping)(dom)
+curva4 = STRUCT(MKPOLS(obj))
+cuore4 = STRUCT([curva4,S(1)(-1)(curva4)])
+#strati della piscina
+esterno1 = PROD([SOLIDIFY(cuore1),Q(.4)])
+esterno2 = PROD([SOLIDIFY(cuore2),Q(.1)])
+esterno3 = PROD([SOLIDIFY(cuore3),Q(.1)])
+base = PROD([SOLIDIFY(cuore4),Q(.2)])
+acqua = PROD([SOLIDIFY(cuore4),Q(.1)])
+#assemblaggio piscina
+acqua = COLOR(WATERBLUE)(acqua)
+bordo = DIFFERENCE([esterno1,T(3)(.3)(esterno2),T(3)(.2)(esterno3),base])
+piscina = T([1,2])([-10,-8])(STRUCT([bordo,acqua]))
 
 #collina
 controlpoints = [[20,0],[22,0],[24,0],[26,-1],[28,-4],[29,-7],[30,-10]]
@@ -105,7 +158,7 @@ hill2D = T(1)(-1.3)(MAP([S3,S1,S2])((PROD([SOLIDIFY(hill),Q(2.6)]))))
 hill2D = COLOR([0.002,0.743,0.224])(hill2D)
 hill3D = T(3)(-0.1)(STRUCT(NN(36)([hill2D,R([1,2])(PI/36)])))
 
-palazzina = STRUCT([ala1,ala2,ala3,place,hill3D,elevator,pianerottoli])
+palazzina = STRUCT([ala1,ala2,ala3,place,hill3D,elevators,pianerottoli,piscina])
 
 print("Loading... Please Wait")
 VIEW(palazzina)
