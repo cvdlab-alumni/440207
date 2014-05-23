@@ -5,6 +5,9 @@ from larcc import *
 
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 
+def trasparenza(oggetto):
+    return MATERIAL([1,1,1,0.1, 0,0,0.8,0.5, 1,1,1,0.1, 1,1,1,0.1, 100])(oggetto)
+
 #casa torresina
 master = assemblyDiagramInit([11,11,2])([[.3,1,.1,3,.1,3,.1,1,.1,4,.3],[.3,1.5,.1,1.5,.1,1,.1,3,.1,3,.3],[.3,2.7]])
 V,CV = master
@@ -90,8 +93,19 @@ hpc = cellNumbering (master,hpc)(range(len(master[1])),RED,1)
 VIEW(hpc)
 
 #RIMOZIONE PORTE E FINESTRE
-toRemove = [160,219,166,184,190,196,202,208,214,172,228,237,231,243]
-master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
-DRAW(master)
+porteToRemove = [160,166,172,178,184,190,196,202,208,214]
+finestreToRemove = [219,228,231,237,243]
+doors =  master[0], [cell for k,cell in enumerate(master[1]) if (k in porteToRemove)]
+windows = master[0], [cell for k,cell in enumerate(master[1]) if (k in finestreToRemove)]
 
+porte = COLOR([100/255.,70/255.,0/255.])(STRUCT(MKPOLS(doors)))
+finestre = trasparenza(STRUCT(MKPOLS(windows)))
+
+toRemove = [160,219,166,178,184,190,196,202,208,214,172,228,237,231,243]
+master = master[0], [cell for k,cell in enumerate(master[1]) if not (k in toRemove)]
+
+mura = STRUCT(MKPOLS(master))
+
+floor0 = STRUCT([mura,porte,finestre])
+VIEW(floor0)
 
