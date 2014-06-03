@@ -67,10 +67,6 @@ master1 = V1,[cell for k,cell in enumerate(CV1) if not (k in toRemove1)]
 diagram1 = assemblyDiagramInit([1,2,2])([[.3],[1,.5],[2.2,.5]])
 master1 = diagram2cell(diagram1,master1,38)
 
-hpc1 = SKEL_1(STRUCT(MKPOLS(master1)))
-hpc1 = cellNumbering (master1,hpc1)(range(len(master1[1])),RED,1)
-VIEW(hpc1)
-
 V1,CV2 = master1
 toRemove2 = [212]
 door1 = V1,[cell for k,cell in enumerate(CV2) if (k in toRemove2)]
@@ -107,7 +103,7 @@ place = COLOR([.4,.4,.4])(T(3)(-0.1)(CYLINDER([20,0.1])(72)))
 floor = COLOR(GREEN)(T([1,2,3])([-5,-5,-.1])(CUBOID([10,10,.1])))
 g1 = T(3)(1)(MATERIAL([1,1,1,0.1, 0,0,0.8,0.5, 1,1,1,0.1, 1,1,1,0.1, 100])(floor))
 elevator1 = ((T([1,2])([-3,-3.5])(CUBOID([1,1.5,3.3]))))
-elevator2 = ((T([1,2,3])([-3,-3.5,3.3])(CUBOID([1,1.5,2.7]))))
+elevator2 = COLOR([.4,.4,.4])(((T([1,2,3])([-3,-3.5,3.3])(CUBOID([1,1.5,2.7])))))
 elevator3 = ((T([1,2,3])([-3,-3.5,6])(CUBOID([1,1.5,3]))))
 elevator1 = trasparenza(elevator1)
 elevator3 = trasparenza(elevator3)

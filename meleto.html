@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>Meleto con ombre</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+	
+	#stats {  /* Align stats top-left */
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style> 
+  </head> 
+  <body>
+    <!-- JavaScript libraries -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script> 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+    <script src="assets/libs/TrackballControls.js"></script>
+	
+	<!-- Javascript code that runs our Three.js examples --> 
+    <script>
+           // once everything is loaded, we run our Three.js stuff.
+      $(function () {
+	  
+		var stats = initStats();
+	  
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer();
+		
+		// create trackball controls
+		var trackballControls = new THREE.TrackballControls(camera);
+
+        renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+		
+		//A STA BOTTA SI USA IL MATERIALE LAMBERT, SENSIBILE ALLA LUCE
+
+        // create the ground plane
+        var planeGeometry = new THREE.PlaneGeometry(80,80);
+        var planeMaterial =  new THREE.MeshLambertMaterial({color: 0x531B00});
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.receiveShadow  = true;
+
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+		plane.position.set(0,-5,0);
+
+        // add the plane to the scene
+        scene.add(plane);
+		
+		//CREAZIONE OGGETTI
+		var ao = new THREE.Object3D();
+		scene.add(ao);
+		
+		function generaAlbero(){
+		
+			var o = new THREE.Object3D();
+			ao.add(o);
+		
+			var chioma = new THREE.Object3D();
+			o.add(chioma);
+
+			// create a cylinder
+			var cylinderGeometry = new THREE.CylinderGeometry( 0.8, 0.8, 9, 32 );
+			var cylinderMaterial = new THREE.MeshLambertMaterial({color: 0xCD853F});
+			var cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
+			cylinder.castShadow = true;
+
+			// position the cylinder
+			cylinder.position.set(0,0,0);
+
+			// add the cylinder to the scene
+			o.add(cylinder);
+
+			//create a sphere
+			var sphereGeometry = new THREE.SphereGeometry(4,18,18);
+			var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x2E8B57});
+			var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+			sphere.castShadow=true;
+	
+			// add the sphere to the chioma
+			chioma.add(sphere);
+	
+		
+			//mela
+			function mela(){
+				var melaGeometry = new THREE.SphereGeometry(0.3,8,8);
+				var melaMaterial = new THREE.MeshLambertMaterial({color: 0xFF0000});
+				var mela = new THREE.Mesh(melaGeometry, melaMaterial);
+				mela.castShadow = true;
+				return mela;
+			}
+		
+			//array di mele
+			var i;
+			var meleto = [];
+			for(i=0;i<50;i++){
+				meleto[i] = mela();
+				var alfa = Math.PI*Math.random();
+				var beta = 2*Math.PI*Math.random() - Math.PI;
+				meleto[i].position.set(4*Math.sin(alfa)*Math.cos(beta),4*Math.sin(alfa)*Math.sin(beta),4*Math.cos(alfa));
+				chioma.add(meleto[i]);
+			}
+		
+			// position the chioma
+			chioma.position.set(0,5,0);
+		
+			return o;
+		}
+		
+		var a;
+		for(a=0;a<40;a++){
+			alberello = generaAlbero();
+			var rnd1 = Math.random();
+			var rnd2 = Math.random();
+			alberello.position.set(78*rnd1-39,0,78*rnd2-39);
+			ao.add(alberello);
+		}
+
+        // position and point the camera to the center of the scene
+        camera.position.set(-30,40,30);
+        camera.up = new THREE.Vector3(0,1,0);
+        camera.lookAt(scene.position);
+		
+		// add subtle ambient lighting
+		var ambiColor = "#1c1c1c";
+		var ambientLight = new THREE.AmbientLight(ambiColor);
+		scene.add(ambientLight);
+		
+		var target = new THREE.Object3D();
+		target.position = new THREE.Vector3(5, 0, 0);
+		
+		var pointColor = "#ffffff";
+		var directionalLight = new THREE.DirectionalLight(pointColor);
+      directionalLight.position.set(-40, 60, -10);
+      directionalLight.castShadow = true;
+      directionalLight.shadowCameraNear = 2;
+      directionalLight.shadowCameraFar = 100;
+      directionalLight.shadowCameraLeft = -40;
+      directionalLight.shadowCameraRight = 40;
+      directionalLight.shadowCameraTop = 40;
+      directionalLight.shadowCameraBottom = -40;
+
+		directionalLight.intensity = 0.5;
+		directionalLight.shadowMapHeight = 1024;
+		directionalLight.shadowMapWidth = 1024;
+
+		scene.add(directionalLight);
+		
+		// add a small sphere simulating the pointlight
+		var sphereLight = new THREE.SphereGeometry(0.2);
+		var sphereLightMaterial = new THREE.MeshBasicMaterial({color: 0xac6c25});
+		var sphereLightMesh = new THREE.Mesh(sphereLight, sphereLightMaterial);
+		sphereLightMesh.castShadow = true;
+
+		sphereLightMesh.position = new THREE.Vector3(3, 20, 3);
+		scene.add(sphereLightMesh);
+	
+		// add axis helper
+		var axisHelper = new THREE.AxisHelper(3);
+		scene.add(axisHelper);
+			
+        // add the output of the renderer to the html element
+        $('body').append(renderer.domElement);
+		
+		// call the render function
+        var step = 0;
+		
+		// used to determine the switch point for the light animation
+		var invert = 1;
+		var phase = 0;
+		
+		var controls = new function () {
+			this.rotationSpeed = 0.03;
+			this.bouncingSpeed = 0.03;
+			this.showAxisHelper = true;
+			this.ambientColor = ambiColor;
+			this.pointColor = pointColor;
+			this.intensity = 1.2;
+			this.debug = false;
+			this.castShadow = true;
+			this.onlyShadow = false;
+			this.target = "Plane";
+		};
+
+		var gui = new dat.GUI();
+		      gui.addColor(controls, 'ambientColor').onChange(function (e) {
+          ambientLight.color = new THREE.Color(e);
+		});
+
+		gui.addColor(controls, 'pointColor').onChange(function (e) {
+			directionalLight.color = new THREE.Color(e);
+		});
+
+		gui.add(controls, 'intensity', 0, 5).onChange(function (e) {
+			directionalLight.intensity = e;
+		});
+
+		gui.add(controls, 'debug').onChange(function (e) {
+			directionalLight.shadowCameraVisible = e;
+		});
+
+		gui.add(controls, 'castShadow').onChange(function (e) {
+			directionalLight.castShadow = e;
+		});
+
+		gui.add(controls, 'onlyShadow').onChange(function (e) {
+			directionalLight.onlyShadow = e;
+		});
+		
+		// var rotationControl = gui.add(controls, 'rotationSpeed',0,0.2);
+		var axis_control = gui.add(controls, 'showAxisHelper');
+        
+        render();
+		
+		axis_control.onChange(function (value) {
+			axisHelper.visible = value;
+		});
+
+        function render() {
+			stats.update();
+			trackballControls.update();
+			
+			step += controls.bouncingSpeed;
+			
+			sphereLightMesh.position.z = -8;
+			sphereLightMesh.position.y = +(27 * (Math.sin(step / 3)));
+			sphereLightMesh.position.x = 10 + (26 * (Math.cos(step / 3)));
+			
+			directionalLight.position = sphereLightMesh.position;
+			
+			requestAnimationFrame(render);
+			renderer.render(scene, camera);
+        }
+
+        function initStats() {
+          var stats = new Stats();
+          stats.setMode(0); // 0: fps, 1: ms
+          $('body').append(stats.domElement);
+          return stats;
+        }
+      });
+    </script>  
+ </body>
+</html>
